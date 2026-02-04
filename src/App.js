@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import Navbar from './components/layout/Navbar';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import PostDetails from './pages/PostDetails';
-import Profile from './pages/Profile';
+import Navbar from './components/layout/Navbar.jsx';
+import Home from './pages/Home.jsx';
+import Login from './pages/Login.jsx';
+import PostDetails from './pages/PostDetails.jsx';
+import Profile from './pages/Profile.jsx';
 import NewPost from './pages/NewPost.jsx';
-import EditPost from './pages/EditPost';
-import MyPosts from './pages/MyPosts';
-import { selectCurrentUser } from './features/auth/authSlice';
+import EditPost from './pages/EditPost.jsx';
+import MyPosts from './pages/MyPosts.jsx';
+import { selectCurrentUser } from './features/auth/authSlice.js';
 
 function App() {
     const currentUser = useSelector(selectCurrentUser);

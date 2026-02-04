@@ -2,8 +2,16 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../services/api';
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
-    const response = await api.get('/posts?_expand=user');
-    return response.data;
+    const [postsResponse, usersResponse] = await Promise.all([
+        api.get('/posts'),
+        api.get('/users')
+    ]);
+    const posts = postsResponse.data;
+    const users = usersResponse.data;
+    return posts.map(post => ({
+        ...post,
+        user: users.find(u => String(u.id) === String(post.userId))
+    }));
 });
 
 export const createPost = createAsyncThunk('posts/createPost', async (newPost, { getState }) => {
@@ -47,9 +55,16 @@ const postsSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(fetchPosts.pending, (state) => {
+                state.status = 'loading';
+            })
             .addCase(fetchPosts.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.items = action.payload;
+            })
+            .addCase(fetchPosts.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
             })
             .addCase(createPost.fulfilled, (state, action) => {
                 state.items.unshift(action.payload);

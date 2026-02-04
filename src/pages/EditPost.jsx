@@ -35,7 +35,7 @@ const EditPost = () => {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        dispatch(updatePost({ id: parseInt(id), data: { content, image } }));
+        dispatch(updatePost({ id, data: { content, image } }));
         navigate('/my-posts');
     };
 
